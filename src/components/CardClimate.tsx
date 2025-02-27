@@ -9,6 +9,32 @@ import {
 import Image from "next/image";
 import { useWeather } from "../service/useWeather";
 
+
+const translateCondition = (condition: string) => {
+    const translations: Record<string, string> = {
+        "Clear": "Céu limpo",
+        "Sunny": "Ensolarado",
+        "Partly cloudy": "Parcialmente nublado",
+        "Cloudy": "Nublado",
+        "Overcast": "Encoberto",
+        "Light rain": "Chuva leve",
+        "Moderate rain": "Chuva moderada",
+        "Heavy rain": "Chuva forte",
+        "Drizzle": "Garoa",
+        "Thunderstorm": "Tempestade",
+        "Snow": "Neve",
+        "Sleet": "Chuva congelante",
+        "Mist": "Névoa",
+        "Fog": "Nevoeiro",
+        "Hail": "Granizo",
+        // Adicione mais conforme necessário
+    };
+
+    return translations[condition] || condition; // Se não houver tradução, mantém o original
+};
+
+
+
 const getWeatherIcon = (condition: string) => {
     const conditionLower = condition.toLowerCase();
 
@@ -37,28 +63,30 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
     if (isLoading) return <p>Carregando...</p>;
     if (error) return <p className="text-red-500">Erro ao buscar clima</p>;
 
-    if (!weather || !weather.forecast || !weather.forecast.forecastday || !weather.forecast.forecastday[dayIndex]) {
+    const forecast = weather?.forecast?.forecastday?.[dayIndex];
+
+    if (!forecast) {
         return <p className="text-red-500">Dados indisponíveis.</p>;
     }
 
-    const forecast = weather.forecast.forecastday[dayIndex];
     const formattedDate = getFormattedDay(forecast.date);
     const weatherIcon = getWeatherIcon(forecast.day.condition.text);
+    const translatedCondition = translateCondition(forecast.day.condition.text);
 
     return (
         <Card className="w-fit rounded-xl p-4">
             <CardHeader>
-                <CardTitle>{formattedDate}</CardTitle>
+                <CardTitle className="text-base">{formattedDate}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-2">
-                <p className="text-2xl font-bold">{forecast.day.avgtemp_c}°C</p>
+                <p className="text-xl font-bold">{forecast.day.avgtemp_c}°C</p>
                 <Image
                     src={weatherIcon}
-                    alt={forecast.day.condition.text}
+                    alt={translatedCondition}
                     width={75}
                     height={75}
                 />
-                <p>{forecast.day.condition.text}</p>
+                <p>{translatedCondition}</p>
             </CardContent>
             <CardFooter className="flex flex-col gap-2 text-sm">
                 <p>💧 <strong>Umidade:</strong> {forecast.day.avghumidity}%</p>
@@ -67,5 +95,6 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
         </Card>
     );
 };
+
 
 export default CardClimate;
