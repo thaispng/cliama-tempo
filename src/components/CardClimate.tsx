@@ -6,9 +6,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import Image from "next/image";
 import { useWeather } from "../service/useWeather";
-
 
 const translateCondition = (condition: string) => {
     const translations: Record<string, string> = {
@@ -27,13 +27,10 @@ const translateCondition = (condition: string) => {
         "Mist": "Névoa",
         "Fog": "Nevoeiro",
         "Hail": "Granizo",
-        // Adicione mais conforme necessário
     };
 
-    return translations[condition] || condition; // Se não houver tradução, mantém o original
+    return translations[condition] || condition;
 };
-
-
 
 const getWeatherIcon = (condition: string) => {
     const conditionLower = condition.toLowerCase();
@@ -60,7 +57,25 @@ const getFormattedDay = (date: string) => {
 const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number }) => {
     const { data: weather, isLoading, error } = useWeather(city);
 
-    if (isLoading) return <p>Carregando...</p>;
+    if (isLoading) {
+        return (
+            <Card className="w-fit rounded-xl p-4 overflow-hidden">
+                <CardHeader>
+                    <Skeleton className="h-6 w-32" />
+                </CardHeader>
+                <CardContent className="flex flex-col items-center gap-2">
+                    <Skeleton className="h-8 w-16" />
+                    <Skeleton className="h-16 w-16 rounded-full" />
+                    <Skeleton className="h-4 w-24" />
+                </CardContent>
+                <CardFooter className="flex flex-col gap-2 text-sm">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-4 w-32" />
+                </CardFooter>
+            </Card>
+        );
+    }
+
     if (error) return <p className="text-red-500">Erro ao buscar clima</p>;
 
     const forecast = weather?.forecast?.forecastday?.[dayIndex];
@@ -74,7 +89,7 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
     const translatedCondition = translateCondition(forecast.day.condition.text);
 
     return (
-        <Card className="w-fit rounded-xl p-4">
+        <Card className="w-fit rounded-xl p-4 overflow-hidden">
             <CardHeader>
                 <CardTitle className="text-base">{formattedDate}</CardTitle>
             </CardHeader>
@@ -83,8 +98,8 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
                 <Image
                     src={weatherIcon}
                     alt={translatedCondition}
-                    width={75}
-                    height={75}
+                    width={60}
+                    height={60}
                 />
                 <p>{translatedCondition}</p>
             </CardContent>
@@ -95,6 +110,5 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
         </Card>
     );
 };
-
 
 export default CardClimate;

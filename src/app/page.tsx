@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Header } from "@/components/ui/header";
 import CardClimate from "@/components/CardClimate";
 import { Component } from "@/components/BarChart";
+import ContactDialog from "@/components/ContactDialog";
 
 export default function Home() {
   const [location, setLocation] = useState<{ city: string; region: string } | null>(null);
@@ -44,18 +45,23 @@ export default function Home() {
   }, []);
 
   return (
-    <main>
+    <>
       <Header />
-      <div className="flex flex-col justify-start text-start mt-8 px-4 gap-1">
-        <h1 className="text-4xl font-bold">{greeting}</h1>
-        <p>{location ? `${location.city}, ${location.region}` : "Carregando localização..."}</p>
-      </div>
-      <div className="flex flex-row gap-4 overflow-x-auto p-4">
-        {[...Array(6)].map((_, index) => (
-          <CardClimate key={index} dayIndex={index} />
-        ))}
-      </div>
-      <Component />
-    </main>
+      <main className="flex flex-col p-8 gap-5">
+        <div className="flex flex-row justify-between items-center">
+          <div className="flex flex-col justify-start text-start gap-1">
+            <h1 className="text-4xl font-bold">{greeting}</h1>
+            <p>{location ? `${location.city}, ${location.region}` : "Carregando localização..."}</p>
+          </div>
+          <ContactDialog />
+        </div>
+        <div className="flex flex-row gap-4 overflow-x-auto">
+          {[...Array(6)].map((_, index) => (
+            <CardClimate key={index} dayIndex={index} />
+          ))}
+        </div>
+        <Component />
+      </main>
+    </>
   );
 }
