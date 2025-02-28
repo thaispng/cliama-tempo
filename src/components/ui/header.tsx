@@ -14,14 +14,12 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
 
     useEffect(() => {
         setMounted(true);
-
-        // Atualiza o horário a cada segundo
         const interval = setInterval(() => {
             const now = new Date();
             setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
         }, 1000);
 
-        return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
+        return () => clearInterval(interval);
     }, []);
 
     if (!mounted) return null;
@@ -34,7 +32,7 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
     };
 
     return (
-        <header className="flex justify-between items-center p-4 bg-transparent dark:bg-transparent">
+        <header className="flex justify-between items-center px-8 py-4 bg-transparent dark:bg-transparent">
             <h1 className="flex flex-row gap-2 text-base items-center font-semibold">
                 <MapPin size={16} />
                 <span>{city} - {time}</span>
