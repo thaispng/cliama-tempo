@@ -8,10 +8,12 @@ datasource db {
 }
 
 model Contact {
-  id        String   @id @default(uuid())
-  nome      String
-  email     String
-  phone     String
-  mensagem  String
-  createdAt DateTime @default(now())
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  nome        String
+  email       String
+  phone       String
+  mensagem    String
+  arquivo     Bytes?   
+  arquivoNome String?  
+  createdAt   DateTime @default(now())
 }

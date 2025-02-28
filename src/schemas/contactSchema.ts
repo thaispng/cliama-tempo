@@ -5,4 +5,5 @@ export const contactSchema = z.object({
   email: z.string().email("Email inválido"),
   phone: z.string().min(10, "Telefone inválido"),
   mensagem: z.string().min(1, "Mensagem não pode ser vazia"),
+  arquivo: z.instanceof(File).optional(),
 });
