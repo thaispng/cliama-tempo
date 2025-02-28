@@ -38,7 +38,6 @@ export default function Home() {
         </div>
 
         <div className="flex flex-col lg:flex-row w-full gap-5 p-2 items-start rounded-md">
-          {/* Clima Atual - Aumentando o tamanho com flex-[2] */}
           <div className="flex flex-col w-full lg:flex-[2] gap-4">
             <p className="text-base font-semibold">Clima atual</p>
             <div className="flex flex-col md:flex-row gap-5">
@@ -58,8 +57,8 @@ export default function Home() {
                 <CardClimate key={index} city={city} dayIndex={index} />
               ))}
             </div>
-            <div className="relative hidden md:block">
-              <ScrollArea className="h-[520px]">
+            <div className="relative hidden md:block ">
+              <ScrollArea className="h-[520px] ">
                 <div className="flex flex-col gap-5 pr-2">
                   {[...Array(7)].map((_, index) => (
                     <CardClimate key={index} city={city} dayIndex={index} />
@@ -70,7 +69,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
       </main>
     </>
   )
