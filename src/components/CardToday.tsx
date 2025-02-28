@@ -101,28 +101,30 @@ const CardToday = ({ city }: { city: string }) => {
     const formattedDate = formatDate(forecast.date);
 
     return (
-        <Card className="h-72 flex flex-col shadow-sm">
+        <Card className="flex flex-col shadow-sm">
             <CardHeader className="w-full">
-                <CardTitle className="text-lg bebas-neue">{formattedDate}</CardTitle>
+                <div>
+                    <CardTitle className="text-lg bebas-neue">{formattedDate}
+                    </CardTitle>
+                    <span className="text-muted-foreground text-sm">{translatedCondition}</span>
+                </div>
             </CardHeader>
-            <div className="flex flex-row w-full justify-between items-center">
+            <div className="flex flex-row w-full justify-around items-center">
                 <CardContent className="w-1/2">
                     <div className="flex flex-col items-center gap-2">
                         <Image
                             src={weatherIcon || "/placeholder.svg"}
                             alt={translatedCondition}
-                            width={60}
-                            height={60}
+                            width={80}
+                            height={80}
                         />
-                        <span className="text-4xl font-bold bebas-neue">{Math.round(current.temp_c)}°</span>
                     </div>
                 </CardContent>
-                <CardFooter className="w-1/2">
-                    <div className="flex flex-col justify-between items-end gap-2">
-                        <span className="text-muted-foreground">{translatedCondition}</span>
-                        <span className="text-muted-foreground">Ventos: {current.wind_kph} km/h</span>
-                        <span className="text-muted-foreground">Máxima de {Math.round(forecast.day.maxtemp_c)}°</span>
-                        <span className="text-muted-foreground">Mínima de {Math.round(forecast.day.mintemp_c)}°</span>
+                <CardFooter className="flex flex-col w-1/2 gap-2">
+                    <span className="text-4xl font-bold bebas-neue">{Math.round(current.temp_c)}°</span>
+                    <div className="flex flex-col justify-between items-end">
+                        <span className="text-muted-foreground  text-sm">Máxima de {Math.round(forecast.day.maxtemp_c)}°</span>
+                        <span className="text-muted-foreground text-sm">Mínima de {Math.round(forecast.day.mintemp_c)}°</span>
                     </div>
                 </CardFooter>
             </div>

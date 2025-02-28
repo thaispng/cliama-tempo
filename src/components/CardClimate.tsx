@@ -96,15 +96,25 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
         <Card className="w-[400px] rounded-xl overflow-hidden shadow-sm">
             <CardHeader>
                 <CardTitle className="text-sm bebas-neue">{formattedDate}</CardTitle>
+                <span className="text-muted-foreground text-sm">{translatedCondition}</span>
             </CardHeader>
-            <CardContent className="flex flex-col items-center gap-2">
-                <Image
-                    src={weatherIcon}
-                    alt={translatedCondition}
-                    width={60}
-                    height={60}
-                />
-                <p className="text-xl font-bold bebas-neue">{avgTemp}°C</p>
+            <CardContent className="flex flex-row justify-around items-center gap-2">
+                <div>
+                    <Image
+                        src={weatherIcon}
+                        alt={translatedCondition}
+                        width={60}
+                        height={60}
+                    />
+                </div>
+                <div>
+                    <p className="text-xl font-bold bebas-neue">{avgTemp}°C</p>
+                    <p className="text-muted-foreground text-xs">Máx: {Math.round(forecast.day.maxtemp_c)}°C</p>
+                    <p className="text-muted-foreground text-xs">Min: {Math.round(forecast.day.mintemp_c)}°C</p>
+                    <p className="text-muted-foreground text-xs">Umidade: {forecast.day.avghumidity}%</p>
+                    <p className="text-muted-foreground text-xs">Vento: {Math.round(forecast.day.maxwind_kph)} km/h</p>
+                    <p className="text-muted-foreground text-xs">Índice UV: {forecast.day.uv}</p>
+                </div>
             </CardContent>
         </Card>
     );

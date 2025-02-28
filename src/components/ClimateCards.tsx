@@ -1,9 +1,10 @@
 "use client"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Droplets, Eye, Gauge, Thermometer, Umbrella, Wind } from "lucide-react"
+import { Droplets, Eye, Gauge, Info, Thermometer, Umbrella, Wind } from "lucide-react"
 import { useWeather } from "../service/useWeather"
 import { Skeleton } from "@/components/ui/skeleton"
+import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/components/ui/tooltip"
 
 export default function ClimateCards({ city = "São Paulo" }: { city?: string }) {
     const { data: weather, isLoading, error } = useWeather(city)
@@ -27,7 +28,7 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
 
     if (error || !weather) {
         return (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-5">
                 {[...Array(6)].map((_, index) => (
                     <Card key={index}>
                         <CardHeader>
@@ -56,6 +57,7 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
             title: "Pressão",
             value: `${current.pressure_mb} mb`,
             icon: <Gauge size={22} />,
+            tooltip: "Pressão atmosférica é a força exercida pelo ar sobre a superfície terrestre."
         },
         {
             title: "Sensação térmica",
@@ -76,24 +78,36 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
             title: "Visibilidade",
             value: "10 km",
             icon: <Eye size={22} />,
+            tooltip: "Visibilidade indica a distância máxima em que objetos podem ser claramente vistos."
         },
     ]
 
     return (
-        <div className="grid grid-cols-3 gap-4">
-            {climateData.map((item, index) => (
-                <Card key={index}>
-                    <CardHeader>
-                        <CardTitle className="flex gap-2 text-base font-normal text-muted-foreground">
-                            {item.icon} {item.title}
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="bebas-neue">{item.value}</p>
-                    </CardContent>
-                </Card>
-            ))}
-        </div>
+        <TooltipProvider>
+            <div className="grid grid-cols-3 gap-5">
+                {climateData.map((item, index) => (
+                    <Card key={index}>
+                        <CardHeader>
+                            <CardTitle className="flex justify-between text-base font-normal text-muted-foreground">
+                                <div className="flex gap-2">
+                                    {item.icon} {item.title}
+                                </div>
+                                {item.tooltip && (
+                                    <Tooltip>
+                                        <TooltipTrigger>
+                                            <Info size={15} className="text-gray-400 cursor-pointer" />
+                                        </TooltipTrigger>
+                                        <TooltipContent>{item.tooltip}</TooltipContent>
+                                    </Tooltip>
+                                )}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="bebas-neue">{item.value}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        </TooltipProvider>
     )
 }
-
