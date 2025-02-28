@@ -8,13 +8,14 @@ import ClimateCards from "@/components/ClimateCards"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { useWeather } from "../service/useWeather"
 import MoonCard from "@/components/MoonCard"
+import { LoadingSpinner } from "@/components/Loading"
 
 export default function Home() {
   const [city, setCity] = useState("São Paulo")
   const { data: weather, isLoading, error } = useWeather(city);
 
   if (isLoading) {
-    return <p>Carregando...</p>;
+    return <LoadingSpinner condition="Carregando" />;
   }
 
   if (error || !weather) {
