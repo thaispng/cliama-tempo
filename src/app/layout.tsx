@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
 import { useState } from "react";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,6 +29,7 @@ export default function RootLayout({
       <body className={cn(geistSans.variable, geistMono.variable, "antialiased")}>
         <QueryClientProvider client={queryClient}>
           <ThemeProvider>{children}</ThemeProvider>
+          <Toaster />
         </QueryClientProvider>
       </body>
     </html>
