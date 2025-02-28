@@ -16,7 +16,7 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
         setMounted(true);
         const interval = setInterval(() => {
             const now = new Date();
-            setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+            setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -32,14 +32,15 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
     };
 
     return (
-        <header className="flex justify-between items-center px-8 py-4 bg-transparent dark:bg-transparent">
-            <h1 className="flex flex-row gap-2 text-base items-center font-semibold bebas-neue">
+        <header className="flex flex-col md:flex-row justify-between items-center px-6 py-4 bg-transparent dark:bg-transparent gap-3">
+            <h1 className="flex flex-row gap-2 text-sm md:text-base items-center font-semibold bebas-neue text-center">
                 <MapPin size={16} />
                 <span>{city} - {time}</span>
             </h1>
-            <div className="grid w-full max-w-sm items-center gap-1.5">
+
+            <div className="w-full max-w-md">
                 <Input
-                    className="shadow-sm"
+                    className="w-full shadow-sm text-sm md:text-base"
                     type="text"
                     id="location"
                     placeholder="Digite a cidade e pressione Enter..."
@@ -48,15 +49,14 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
                     onKeyPress={handleSearch}
                 />
             </div>
-            <div className="relative flex items-center">
+            <div className="flex items-center">
                 <Switch
                     checked={theme === "dark"}
                     onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
                     className="relative w-12 h-6 bg-gray-300 dark:bg-gray-700 rounded-full flex items-center transition-all"
                 >
                     <span
-                        className={`absolute top-1 left-1 w-4 h-4 flex items-center justify-center bg-white dark:bg-black rounded-full transition-transform ${theme === "dark" ? "translate-x-6" : "translate-x-0"
-                            }`}
+                        className={`absolute top-1 left-1 w-4 h-4 flex items-center justify-center bg-white dark:bg-black rounded-full transition-transform ${theme === "dark" ? "translate-x-6" : "translate-x-0"}`}
                     >
                         {theme === "dark" ? <Moon size={12} className="text-white" /> : <Sun size={12} className="text-black" />}
                     </span>

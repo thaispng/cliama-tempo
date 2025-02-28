@@ -46,7 +46,6 @@ const getWeatherIcon = (condition: string) => {
     return "/sun.svg";
 };
 
-
 const getFormattedDay = (date: string) => {
     const options: Intl.DateTimeFormatOptions = {
         weekday: "long",
@@ -61,7 +60,7 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
 
     if (isLoading) {
         return (
-            <Card className="w-fit rounded-xl p-4 overflow-hidden">
+            <Card className="w-full md:max-w-sm rounded-xl p-4 overflow-hidden">
                 <CardHeader>
                     <Skeleton className="h-6 w-32" />
                 </CardHeader>
@@ -93,7 +92,7 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
     const avgTemp = Math.round(forecast.day.avgtemp_c);
 
     return (
-        <Card className="w-[400px] rounded-xl overflow-hidden shadow-sm">
+        <Card className="w-full rounded-xl overflow-hidden shadow-sm">
             <CardHeader>
                 <CardTitle className="text-sm bebas-neue">{formattedDate}</CardTitle>
                 <span className="text-muted-foreground text-sm">{translatedCondition}</span>
@@ -121,5 +120,3 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
 };
 
 export default CardClimate;
-
-

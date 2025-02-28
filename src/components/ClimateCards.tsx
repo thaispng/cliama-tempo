@@ -11,7 +11,7 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
 
     if (isLoading) {
         return (
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[...Array(6)].map((_, index) => (
                     <Card key={index}>
                         <CardHeader>
@@ -28,7 +28,7 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
 
     if (error || !weather) {
         return (
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {[...Array(6)].map((_, index) => (
                     <Card key={index}>
                         <CardHeader>
@@ -84,7 +84,7 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
 
     return (
         <TooltipProvider>
-            <div className="grid grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
                 {climateData.map((item, index) => (
                     <Card key={index}>
                         <CardHeader>
