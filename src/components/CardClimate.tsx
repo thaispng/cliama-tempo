@@ -35,15 +35,17 @@ const translateCondition = (condition: string) => {
 const getWeatherIcon = (condition: string) => {
     const conditionLower = condition.toLowerCase();
 
-    if (conditionLower.includes("sun") || conditionLower.includes("clear")) return "/sun.svg";
-    if (conditionLower.includes("partly cloudy")) return "/sun-clouds.svg";
-    if (conditionLower.includes("cloudy") || conditionLower.includes("overcast")) return "/clouds.svg";
-    if (conditionLower.includes("rain") || conditionLower.includes("drizzle")) return "/sun-clouds-rain.svg";
-    if (conditionLower.includes("thunderstorm") || conditionLower.includes("lightning")) return "/lightning.svg";
-    if (conditionLower.includes("snow") || conditionLower.includes("sleet")) return "/clouds-snow.svg";
+    if (conditionLower.includes("céu limpo") || conditionLower.includes("sol")) return "/sun.svg";
+    if (conditionLower.includes("parcialmente nublado")) return "/sun-clouds.svg";
+    if (conditionLower.includes("nublado") || conditionLower.includes("encoberto")) return "/clouds.svg";
+    if (conditionLower.includes("chuva") || conditionLower.includes("garoa")) return "/sun-clouds-rain.svg";
+    if (conditionLower.includes("trovoada") || conditionLower.includes("tempestade")) return "/lightning.svg";
+    if (conditionLower.includes("neve") || conditionLower.includes("sleet")) return "/clouds-snow.svg";
+    if (conditionLower.includes("granizo")) return "/hail.svg";
 
     return "/sun.svg";
 };
+
 
 const getFormattedDay = (date: string) => {
     const options: Intl.DateTimeFormatOptions = {

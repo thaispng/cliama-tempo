@@ -1,35 +1,72 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchWeather } from "./weatherService";
-import { WeatherData } from "../types/weather";
+import type { WeatherData } from "../types/weather";
 
 export function useWeather(city?: string) {
-  return useQuery<WeatherData>({
+  return useQuery<WeatherData, Error>({
     queryKey: ["weather", city],
     queryFn: async () => {
-      if (city) return fetchWeather(undefined, undefined, city);
-
-      return new Promise<WeatherData>((resolve, reject) => {
-        if ("geolocation" in navigator) {
-          navigator.geolocation.getCurrentPosition(
-            async (position) => {
-              try {
-                const data = await fetchWeather(
-                  position.coords.latitude,
-                  position.coords.longitude
-                );
-                resolve(data);
-              } catch (error) {
-                reject(error);
-              }
-            },
-            () => reject(new Error("Permissão de localização negada"))
-          );
-        } else {
-          reject(new Error("Geolocalização não suportada pelo navegador"));
+      try {
+        if (city) {
+          return await fetchWeather(undefined, undefined, city);
         }
-      });
+
+        return new Promise<WeatherData>((resolve, reject) => {
+          if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                try {
+                  const data = await fetchWeather(
+                    position.coords.latitude,
+                    position.coords.longitude
+                  );
+                  resolve(data);
+                } catch (error) {
+                  console.error(
+                    "Erro ao buscar dados com geolocalização:",
+                    error
+                  );
+                  // Fallback para uma cidade padrão se a geolocalização falhar
+                  try {
+                    const data = await fetchWeather(
+                      undefined,
+                      undefined,
+                      "São Paulo"
+                    );
+                    resolve(data);
+                  } catch (fallbackError) {
+                    reject(fallbackError);
+                  }
+                }
+              },
+              async (error) => {
+                console.error("Erro de geolocalização:", error);
+                // Fallback para uma cidade padrão se a geolocalização for negada
+                try {
+                  const data = await fetchWeather(
+                    undefined,
+                    undefined,
+                    "São Paulo"
+                  );
+                  resolve(data);
+                } catch (fallbackError) {
+                  reject(fallbackError);
+                }
+              }
+            );
+          } else {
+            // Fallback para navegadores sem suporte a geolocalização
+            fetchWeather(undefined, undefined, "São Paulo")
+              .then(resolve)
+              .catch(reject);
+          }
+        });
+      } catch (error) {
+        console.error("Erro no useWeather:", error);
+        throw error;
+      }
     },
-    staleTime: 1000 * 60 * 5, 
-    retry: 1, 
+    staleTime: 1000 * 60 * 5, // 5 minutos
+    retry: 2,
   });
 }

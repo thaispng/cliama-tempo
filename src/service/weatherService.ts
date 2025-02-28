@@ -1,7 +1,7 @@
-import { WeatherData } from "../types/weather";
+import type { WeatherData } from "../types/weather";
 
 const API_URL = "https://api.weatherapi.com/v1/forecast.json";
-const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY; 
+const API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 
 export const fetchWeather = async (
   lat?: number,
@@ -16,9 +16,9 @@ export const fetchWeather = async (
 
   const params = new URLSearchParams();
   params.append("key", API_KEY);
-  params.append("days", "7"); 
-  params.append("aqi", "yes"); 
-  params.append("alerts", "yes"); 
+  params.append("days", "7");
+  params.append("aqi", "yes");
+  params.append("alerts", "yes");
   params.append("lang", "pt");
 
   if (lat && lon) {
@@ -29,14 +29,25 @@ export const fetchWeather = async (
     throw new Error("Nenhuma localização fornecida");
   }
 
-  const res = await fetch(`${API_URL}?${params.toString()}`);
-  if (!res.ok) throw new Error("Erro ao buscar o clima");
+  try {
+    console.log(`Buscando dados do clima para: ${city || `${lat},${lon}`}`);
 
-  const data: WeatherData = await res.json();
+    const res = await fetch(`${API_URL}?${params.toString()}`);
 
-  if (!data.forecast || !data.forecast.forecastday) {
-    throw new Error("Previsão não disponível");
+    if (!res.ok) {
+      console.error(`Erro na API: ${res.status} ${res.statusText}`);
+      throw new Error(`Erro ao buscar o clima: ${res.status}`);
+    }
+
+    const data: WeatherData = await res.json();
+
+    if (!data.forecast || !data.forecast.forecastday) {
+      throw new Error("Previsão não disponível");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Erro ao buscar dados do clima:", error);
+    throw error;
   }
-
-  return data;
 };
