@@ -6,43 +6,49 @@ import { Switch } from "@/components/ui/switch";
 import { MapPin, Moon, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-export function Header() {
+export function Header({ city, setCity }: { city: string; setCity: (city: string) => void }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
-    const [location, setLocation] = useState({ city: "Localização", region: "" });
+    const [search, setSearch] = useState("");
+    const [time, setTime] = useState("");
 
     useEffect(() => {
         setMounted(true);
 
-        if ("geolocation" in navigator) {
-            navigator.geolocation.getCurrentPosition(
-                async (position) => {
-                    const { latitude, longitude } = position.coords;
+        // Atualiza o horário a cada segundo
+        const interval = setInterval(() => {
+            const now = new Date();
+            setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
+        }, 1000);
 
-                    const res = await fetch(`/api/weather?lat=${latitude}&lon=${longitude}`);
-                    const data = await res.json();
-
-                    if (data?.location) {
-                        setLocation({ city: data.location.name, region: data.location.region });
-                    }
-                },
-                () => {
-                    setLocation({ city: "Localização não permitida", region: "" });
-                }
-            );
-        }
+        return () => clearInterval(interval); // Limpa o intervalo ao desmontar o componente
     }, []);
 
     if (!mounted) return null;
+
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && search.trim()) {
+            setCity(search.trim());
+            setSearch("");
+        }
+    };
 
     return (
         <header className="flex justify-between items-center p-4 bg-transparent dark:bg-transparent">
             <h1 className="flex flex-row gap-2 text-base items-center font-semibold">
                 <MapPin size={16} />
-                <span>{location.city},</span> {location.region}
+                <span>{city} - {time}</span>
             </h1>
             <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Input type="text" id="location" placeholder="Pesquise por CEP, cidade, rua..." />
+                <Input
+                    className="shadow-sm"
+                    type="text"
+                    id="location"
+                    placeholder="Digite a cidade e pressione Enter..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    onKeyPress={handleSearch}
+                />
             </div>
             <div className="relative flex items-center">
                 <Switch

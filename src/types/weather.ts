@@ -27,6 +27,14 @@ export interface WeatherCurrent {
   pressure_mb: number;
 }
 
+export interface WeatherAstro {
+  sunrise: string;
+  sunset: string;
+  moonrise: string;
+  moonset: string;
+  moon_phase: string;
+}
+
 export interface WeatherForecastDay {
   date: string;
   day: {
@@ -39,6 +47,7 @@ export interface WeatherForecastDay {
     daily_chance_of_rain: number;
     condition: WeatherCondition;
   };
+  astro: WeatherAstro;
 }
 
 export interface WeatherForecast {

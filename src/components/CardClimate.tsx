@@ -54,7 +54,7 @@ const getFormattedDay = (date: string) => {
     return new Intl.DateTimeFormat("pt-BR", options).format(new Date(date));
 };
 
-const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number }) => {
+const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }) => {
     const { data: weather, isLoading, error } = useWeather(city);
 
     if (isLoading) {
@@ -88,27 +88,26 @@ const CardClimate = ({ city, dayIndex = 0 }: { city?: string; dayIndex?: number 
     const weatherIcon = getWeatherIcon(forecast.day.condition.text);
     const translatedCondition = translateCondition(forecast.day.condition.text);
 
+    const avgTemp = Math.round(forecast.day.avgtemp_c);
+
     return (
-        <Card className="w-fit rounded-xl p-4 overflow-hidden">
+        <Card className="w-96 rounded-xl overflow-hidden shadow-sm">
             <CardHeader>
-                <CardTitle className="text-base">{formattedDate}</CardTitle>
+                <CardTitle className="text-sm">{formattedDate}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-2">
-                <p className="text-xl font-bold">{forecast.day.avgtemp_c}°C</p>
                 <Image
                     src={weatherIcon}
                     alt={translatedCondition}
                     width={60}
                     height={60}
                 />
-                <p>{translatedCondition}</p>
+                <p className="text-xl font-bold">{avgTemp}°C</p>
             </CardContent>
-            <CardFooter className="flex flex-col gap-2 text-sm">
-                <p>💧 <strong>Umidade:</strong> {forecast.day.avghumidity}%</p>
-                <p>💨 <strong>Vento:</strong> {forecast.day.maxwind_kph} km/h</p>
-            </CardFooter>
         </Card>
     );
 };
 
 export default CardClimate;
+
+

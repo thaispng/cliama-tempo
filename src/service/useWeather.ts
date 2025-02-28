@@ -1,30 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { WeatherData } from "../../types/weather";
-
-const fetchWeather = async (lat?: number, lon?: number, city?: string) => {
-  const params = new URLSearchParams();
-  if (lat && lon) {
-    params.append("lat", lat.toString());
-    params.append("lon", lon.toString());
-  } else if (city) {
-    params.append("city", city);
-  }
-
-  const res = await fetch(`/api/weather?${params.toString()}`);
-  if (!res.ok) throw new Error("Erro ao buscar o clima");
-
-  const data: WeatherData = await res.json();
-
-  if (!data.forecast || !data.forecast.forecastday) {
-    throw new Error("Previsão não disponível");
-  }
-
-  return data;
-};
-
+import { fetchWeather } from "./weatherService";
+import { WeatherData } from "../types/weather";
 
 export function useWeather(city?: string) {
-  return useQuery({
+  return useQuery<WeatherData>({
     queryKey: ["weather", city],
     queryFn: async () => {
       if (city) return fetchWeather(undefined, undefined, city);
@@ -50,7 +29,7 @@ export function useWeather(city?: string) {
         }
       });
     },
-    staleTime: 1000 * 60 * 5,
-    retry: 1,
+    staleTime: 1000 * 60 * 5, 
+    retry: 1, 
   });
 }

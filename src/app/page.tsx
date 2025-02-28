@@ -1,66 +1,106 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Header } from "@/components/ui/header";
 import CardClimate from "@/components/CardClimate";
-import { Component } from "@/components/BarChart";
 import ContactDialog from "@/components/ContactDialog";
-
+import CardToday from "@/components/CardToday";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Wind } from "lucide-react";
 export default function Home() {
-  const [location, setLocation] = useState<{ city: string; region: string } | null>(null);
-  const [greeting, setGreeting] = useState("Bom dia!");
+  const [city, setCity] = useState("São Paulo");
 
-  useEffect(() => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-
-          try {
-            const res = await fetch(`/api/weather?lat=${latitude}&lon=${longitude}`);
-            const data = await res.json();
-
-            if (data?.location) {
-              setLocation({ city: data.location.name, region: data.location.region });
-
-              const localTime = new Date(data.location.localtime);
-              const hours = localTime.getHours();
-
-              if (hours >= 5 && hours < 12) {
-                setGreeting("Bom dia!");
-              } else if (hours >= 12 && hours < 18) {
-                setGreeting("Boa tarde!");
-              } else {
-                setGreeting("Boa noite!");
-              }
-            }
-          } catch (error) {
-            console.error("Erro ao obter localização:", error);
-          }
-        },
-        (error) => {
-          console.error("Erro ao obter localização:", error);
-        }
-      );
-    }
-  }, []);
 
   return (
     <>
-      <Header />
+      <Header city={city} setCity={setCity} />
       <main className="flex flex-col p-8 gap-5">
         <div className="flex flex-row justify-between items-center">
           <div className="flex flex-col justify-start text-start gap-1">
-            <h1 className="text-4xl font-bold">{greeting}</h1>
-            <p>{location ? `${location.city}, ${location.region}` : "Carregando localização..."}</p>
+            <h1 className="text-4xl font-bold">Previsão do Tempo</h1>
+            <p className="text-muted-foreground">Temperatura para os próximos dias</p>
           </div>
           <ContactDialog />
         </div>
-        <div className="flex flex-row gap-4 overflow-x-auto">
-          {[...Array(6)].map((_, index) => (
-            <CardClimate key={index} dayIndex={index} />
-          ))}
+        <div className="flex flex-row w-full gap-4 p-2 items-start rounded-md">
+          <div className="flex flex-col w-full gap-4">
+            <CardToday />
+            <div className="grid grid-cols-3 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Qualidade do ar</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Umidade</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Pressão</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Visibilidade</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Índice UV</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex gap-2 text-base"> <Wind size={22} />Velocidade do vento</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">
+                    156
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4">
+            <p className="text-base font-semibold">
+              Previsão para os próximos dias
+            </p>
+            {[...Array(7)].map((_, index) => (
+              <CardClimate key={index} city={city} dayIndex={index} />
+            ))}
+          </div>
         </div>
-        <Component />
       </main>
     </>
   );

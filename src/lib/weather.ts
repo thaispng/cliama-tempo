@@ -1,5 +1,5 @@
 import axios from "axios";
-import { WeatherData } from "../../types/weather";
+import { WeatherData } from "../types/weather";
 
 const API_KEY = process.env.WEATHER_API_KEY;
 const BASE_URL = "http://api.weatherapi.com/v1";

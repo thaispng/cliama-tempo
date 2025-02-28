@@ -26,7 +26,7 @@ export default function ContactDialog() {
     return (
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
-                <Button variant="outline">Entre em Contato</Button>
+                <Button variant="outline" className="shadow-sm">Entre em Contato</Button>
             </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
