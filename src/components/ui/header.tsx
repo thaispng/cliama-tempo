@@ -33,7 +33,7 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
 
     return (
         <header className="flex justify-between items-center px-8 py-4 bg-transparent dark:bg-transparent">
-            <h1 className="flex flex-row gap-2 text-base items-center font-semibold">
+            <h1 className="flex flex-row gap-2 text-base items-center font-semibold bebas-neue">
                 <MapPin size={16} />
                 <span>{city} - {time}</span>
             </h1>

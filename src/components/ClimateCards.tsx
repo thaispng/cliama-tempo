@@ -84,12 +84,12 @@ export default function ClimateCards({ city = "São Paulo" }: { city?: string })
             {climateData.map((item, index) => (
                 <Card key={index}>
                     <CardHeader>
-                        <CardTitle className="flex gap-2 text-base">
+                        <CardTitle className="flex gap-2 text-base font-normal text-muted-foreground">
                             {item.icon} {item.title}
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <p className="text-muted-foreground">{item.value}</p>
+                        <p className="bebas-neue">{item.value}</p>
                     </CardContent>
                 </Card>
             ))}

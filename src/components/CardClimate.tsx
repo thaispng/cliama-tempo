@@ -93,9 +93,9 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
     const avgTemp = Math.round(forecast.day.avgtemp_c);
 
     return (
-        <Card className="w-96 rounded-xl overflow-hidden shadow-sm">
+        <Card className="w-[400px] rounded-xl overflow-hidden shadow-sm">
             <CardHeader>
-                <CardTitle className="text-sm">{formattedDate}</CardTitle>
+                <CardTitle className="text-sm bebas-neue">{formattedDate}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-2">
                 <Image
@@ -104,7 +104,7 @@ const CardClimate = ({ city, dayIndex = 0 }: { city: string; dayIndex?: number }
                     width={60}
                     height={60}
                 />
-                <p className="text-xl font-bold">{avgTemp}°C</p>
+                <p className="text-xl font-bold bebas-neue">{avgTemp}°C</p>
             </CardContent>
         </Card>
     );

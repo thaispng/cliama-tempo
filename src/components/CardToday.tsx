@@ -47,6 +47,11 @@ const translateCondition = (condition: string) => {
     return translations[condition] || condition;
 };
 
+const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("pt-BR", { weekday: "long", day: "2-digit", month: "long" }).format(date);
+};
+
 const CardToday = ({ city }: { city: string }) => {
     const { data: weather, isLoading, error } = useWeather(city);
 
@@ -54,7 +59,7 @@ const CardToday = ({ city }: { city: string }) => {
         return (
             <Card className="w-full shadow-sm">
                 <CardHeader>
-                    <CardTitle>Clima atual</CardTitle>
+                    <CardTitle>Carregando...</CardTitle>
                 </CardHeader>
                 <div className="flex flex-row justify-between items-center">
                     <CardContent>
@@ -80,7 +85,7 @@ const CardToday = ({ city }: { city: string }) => {
         return (
             <Card className="w-full shadow-sm">
                 <CardHeader>
-                    <CardTitle>Clima atual</CardTitle>
+                    <CardTitle>Erro</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <p className="text-red-500">Erro ao carregar dados do clima</p>
@@ -93,30 +98,27 @@ const CardToday = ({ city }: { city: string }) => {
     const forecast = weather.forecast.forecastday[0];
     const weatherIcon = getWeatherIcon(current.condition.text);
     const translatedCondition = translateCondition(current.condition.text);
-
-    console.log("Condição atual:", weather?.current?.condition?.text);
-    console.log("Ícone selecionado:", getWeatherIcon(weather?.current?.condition?.text));
-
+    const formattedDate = formatDate(forecast.date);
 
     return (
-        <Card className="w-full shadow-sm">
-            <CardHeader>
-                <CardTitle>Clima atual</CardTitle>
+        <Card className="h-72 flex flex-col shadow-sm">
+            <CardHeader className="w-full">
+                <CardTitle className="text-lg bebas-neue">{formattedDate}</CardTitle>
             </CardHeader>
-            <div className="flex flex-row justify-between items-center">
-                <CardContent>
+            <div className="flex flex-row w-full justify-between items-center">
+                <CardContent className="w-1/2">
                     <div className="flex flex-col items-center gap-2">
                         <Image
                             src={weatherIcon || "/placeholder.svg"}
                             alt={translatedCondition}
-                            width={80}
-                            height={80}
+                            width={60}
+                            height={60}
                         />
-                        <span className="text-2xl font-bold">{Math.round(current.temp_c)}°</span>
+                        <span className="text-4xl font-bold bebas-neue">{Math.round(current.temp_c)}°</span>
                     </div>
                 </CardContent>
-                <CardFooter>
-                    <div className="flex flex-col justify-between items-center gap-2">
+                <CardFooter className="w-1/2">
+                    <div className="flex flex-col justify-between items-end gap-2">
                         <span className="text-muted-foreground">{translatedCondition}</span>
                         <span className="text-muted-foreground">Ventos: {current.wind_kph} km/h</span>
                         <span className="text-muted-foreground">Máxima de {Math.round(forecast.day.maxtemp_c)}°</span>
