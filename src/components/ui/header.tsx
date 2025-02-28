@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Switch } from "@/components/ui/switch";
 import { MapPin, Moon, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 export function Header({ city, setCity }: { city: string; setCity: (city: string) => void }) {
     const { theme, setTheme } = useTheme();
@@ -16,7 +17,7 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
         setMounted(true);
         const interval = setInterval(() => {
             const now = new Date();
-            setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+            setTime(now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }));
         }, 1000);
 
         return () => clearInterval(interval);
@@ -35,7 +36,9 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
         <header className="flex flex-col md:flex-row justify-between items-center px-6 py-4 bg-transparent dark:bg-transparent gap-3">
             <h1 className="flex flex-row gap-2 text-sm md:text-base items-center font-semibold bebas-neue text-center">
                 <MapPin size={16} />
-                <span>{city} - {time}</span>
+                <span className="flex items-center gap-2">
+                    {city} <Separator orientation="vertical" className="h-3 bg-gray-500" /> {time}
+                </span>
             </h1>
 
             <div className="w-full max-w-md">
