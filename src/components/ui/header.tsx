@@ -6,12 +6,15 @@ import { Switch } from "@/components/ui/switch";
 import { MapPin, Moon, Sun } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useAddressLookup } from "@/service/useAddressLookup";
 
 export function Header({ city, setCity }: { city: string; setCity: (city: string) => void }) {
     const { theme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
     const [search, setSearch] = useState("");
     const [time, setTime] = useState("");
+
+    const { data: searchedCity, isFetching } = useAddressLookup(search);
 
     useEffect(() => {
         setMounted(true);
@@ -23,21 +26,21 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
         return () => clearInterval(interval);
     }, []);
 
-    if (!mounted) return null;
-
-    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === "Enter" && search.trim()) {
-            setCity(search.trim());
+    useEffect(() => {
+        if (searchedCity) {
+            setCity(searchedCity);
             setSearch("");
         }
-    };
+    }, [searchedCity, setCity]);
+
+    if (!mounted) return null;
 
     return (
         <header className="flex flex-col md:flex-row justify-between items-center px-6 py-4 bg-transparent dark:bg-transparent gap-3">
             <h1 className="flex flex-row gap-2 text-sm md:text-base items-center font-semibold bebas-neue text-center">
                 <MapPin size={16} />
                 <span className="flex items-center gap-2">
-                    {city} <Separator orientation="vertical" className="h-3 bg-gray-500" /> {time}
+                    {isFetching ? "Buscando..." : city} <Separator orientation="vertical" className="h-3 bg-gray-500" /> {time}
                 </span>
             </h1>
 
@@ -46,10 +49,9 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
                     className="w-full shadow-sm text-sm md:text-base"
                     type="text"
                     id="location"
-                    placeholder="Digite a cidade e pressione Enter..."
+                    placeholder="Digite um CEP, rua ou cidade e pressione Enter..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    onKeyPress={handleSearch}
                 />
             </div>
             <div className="flex items-center">
