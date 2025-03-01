@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useLocation } from "../service/useLocation"; // Novo serviço com Axios
+import { useLocation } from "../service/useLocation"; 
 import { Header } from "@/components/ui/header";
 import CardClimate from "@/components/CardClimate";
 import ContactDialog from "@/components/ContactDialog";
@@ -16,7 +16,7 @@ export default function Home() {
   const { data: detectedCity, isLoading: isLoadingLocation } = useLocation();
   const { data: weather, isLoading: isLoadingWeather, error } = useWeather(city);
 
-  // Atualiza a cidade com a localização detectada
+
   useEffect(() => {
     if (detectedCity) {
       setCity(detectedCity);

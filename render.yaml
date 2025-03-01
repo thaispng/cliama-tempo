@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: next-js
+    runtime: node
+    plan: starter
+    buildCommand: yarn; yarn build
+    startCommand: yarn start
+    autoDeploy: false
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        value: mongodb+srv://thaisvtr26:t6BoYJAzz6r2lvzB@cluster0.tvffi.mongodb.net/clima-tempo?retryWrites=true&w=majority&appName=Cluster0
+      - key: NEXT_PUBLIC_WEATHER_API_KEY
+        value: 1a2d4aa91a98406b881165349252802
