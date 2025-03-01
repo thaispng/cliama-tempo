@@ -26,7 +26,6 @@ export function useWeather(city?: string) {
                     "Erro ao buscar dados com geolocalização:",
                     error
                   );
-                  // Fallback para uma cidade padrão se a geolocalização falhar
                   try {
                     const data = await fetchWeather(
                       undefined,
@@ -41,7 +40,6 @@ export function useWeather(city?: string) {
               },
               async (error) => {
                 console.error("Erro de geolocalização:", error);
-                // Fallback para uma cidade padrão se a geolocalização for negada
                 try {
                   const data = await fetchWeather(
                     undefined,
@@ -55,7 +53,6 @@ export function useWeather(city?: string) {
               }
             );
           } else {
-            // Fallback para navegadores sem suporte a geolocalização
             fetchWeather(undefined, undefined, "São Paulo")
               .then(resolve)
               .catch(reject);
@@ -66,7 +63,7 @@ export function useWeather(city?: string) {
         throw error;
       }
     },
-    staleTime: 1000 * 60 * 5, // 5 minutos
+    staleTime: 1000 * 60 * 5, 
     retry: 2,
   });
 }

@@ -1,21 +1,30 @@
-"use client"
-import { useState } from "react"
-import { Header } from "@/components/ui/header"
-import CardClimate from "@/components/CardClimate"
-import ContactDialog from "@/components/ContactDialog"
-import CardToday from "@/components/CardToday"
-import ClimateCards from "@/components/ClimateCards"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { useWeather } from "../service/useWeather"
-import MoonCard from "@/components/MoonCard"
-import { LoadingSpinner } from "@/components/Loading"
+"use client";
+import { useState, useEffect } from "react";
+import { useLocation } from "../service/useLocation"; // Novo serviço com Axios
+import { Header } from "@/components/ui/header";
+import CardClimate from "@/components/CardClimate";
+import ContactDialog from "@/components/ContactDialog";
+import CardToday from "@/components/CardToday";
+import ClimateCards from "@/components/ClimateCards";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useWeather } from "../service/useWeather";
+import MoonCard from "@/components/MoonCard";
+import { LoadingSpinner } from "@/components/Loading";
 
 export default function Home() {
-  const [city, setCity] = useState("São Paulo")
-  const { data: weather, isLoading, error } = useWeather(city);
+  const [city, setCity] = useState("São Paulo");
+  const { data: detectedCity, isLoading: isLoadingLocation } = useLocation();
+  const { data: weather, isLoading: isLoadingWeather, error } = useWeather(city);
 
-  if (isLoading) {
-    return <LoadingSpinner condition="Carregando" />;
+  // Atualiza a cidade com a localização detectada
+  useEffect(() => {
+    if (detectedCity) {
+      setCity(detectedCity);
+    }
+  }, [detectedCity]);
+
+  if (isLoadingLocation || isLoadingWeather) {
+    return <LoadingSpinner condition="Carregando..." />;
   }
 
   if (error || !weather) {
@@ -72,5 +81,5 @@ export default function Home() {
         </div>
       </main>
     </>
-  )
+  );
 }
