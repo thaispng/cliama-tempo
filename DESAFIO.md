@@ -25,3 +25,4 @@ Melhorar o inglês e aprender espanhol
 - Utilizei Prisma e MongoDB para mior flexibilidade e escalabilidade no gerenciamento de dados.
 - Implementei os modos dark e light para proporcionar uma melhor experiência visual ao usuário.
 - Fiz interface visualmente consistente e agradável, facilitando a usabilidade.
+- Utilizei a plataforma Render para hospedar meu projeto e facilitar a visualização.
