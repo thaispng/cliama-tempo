@@ -10,7 +10,7 @@ Minha maior dificuldade foi achar uma API que realmente entregasse os dados cert
 - **Prisma**: Utilizei como ORM para facilitar a comunicação entre a aplicação e o banco de dados.
 - **MongoDB**: Escolhi como banco de dados NoSQL para melhor escalabilidade e flexibilidade dos dados.
 - **Tailwind**: Utilizei para estilização rápida e eficiente, garantindo um design responsivo e consistente.
-- **OpenStreetMap (Nominatim)**: tilizei para converter endereços (rua, cidade) em coordenadas geográficas e identificar a cidade a partir de um nome de rua ou cidade digitado pelo usuário.
+- **OpenStreetMap (Nominatim)**: Utilizei para converter endereços (rua, cidade) em coordenadas geográficas e identificar a cidade a partir de um nome de rua ou cidade digitado pelo usuário.
 - **ViaCEP:** Utilizei para buscar a cidade a partir de um CEP, garantindo maior precisão na identificação da localização do usuário.
 
 ## 3. Como me vejo daqui a 5 anos?
