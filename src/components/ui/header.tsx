@@ -49,7 +49,7 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
                     className="w-full shadow-sm text-sm md:text-base"
                     type="text"
                     id="location"
-                    placeholder="Digite um CEP, rua ou cidade e pressione Enter..."
+                    placeholder="Digite uma cidade e pressione Enter..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
