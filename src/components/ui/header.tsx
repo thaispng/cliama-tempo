@@ -33,6 +33,13 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
         }
     }, [searchedCity, setCity]);
 
+    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter" && search.trim() !== "") {
+            // Dispara a pesquisa apenas quando o usuário pressiona Enter
+            setCity(search);
+        }
+    };
+
     if (!mounted) return null;
 
     return (
@@ -49,9 +56,10 @@ export function Header({ city, setCity }: { city: string; setCity: (city: string
                     className="w-full shadow-sm text-sm md:text-base"
                     type="text"
                     id="location"
-                    placeholder="Digite uma cidade e pressione Enter..."
+                    placeholder="Digite uma cidade, rua ou CEP e pressione Enter..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
+                    onKeyDown={handleSearch} // Aguarda Enter para pesquisar
                 />
             </div>
             <div className="flex items-center">
